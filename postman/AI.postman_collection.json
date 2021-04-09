@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "ded3b20c-117e-473a-8018-fd12c2744e3c",
+		"name": "AI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:5000/project",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "www.amd.com"
+					},
+					{
+						"key": "accept",
+						"value": "application/json, text/javascript, */*; q=0.01"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest",
+						"disabled": true
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8",
+						"disabled": true
+					},
+					{
+						"key": "sec-gpc",
+						"value": "1",
+						"disabled": true
+					},
+					{
+						"key": "origin",
+						"value": "https://www.amd.com",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"disabled": true
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"disabled": true
+					},
+					{
+						"key": "referer",
+						"value": "https://www.amd.com/de/direct-buy/de",
+						"disabled": true
+					},
+					{
+						"key": "accept-language",
+						"value": "en-US,en;q=0.9",
+						"disabled": true
+					},
+					{
+						"key": "cookie",
+						"value": "pmuser_country=de; OptanonAlertBoxClosed=2021-04-01T17:05:35.782Z; pi_opt_in659533=true; c_slidebox_lists=; visid_incap_1968037=Y5oGi9bySQOnz3zXwoyFa9T9ZWAAAAAAQUIPAAAAAADgUBl9t4C+kWB4qKqN5mrw; nlbi_1968037=MsWRQEDZig21IYf5YHzPswAAAAD556xpV8eB/XcuoZfKgCim; AKA_A2=A; bm_mi=090F99597557604D0F76B8257AAE1B4F~OLAZIREib9+jJfSs6jviP5SL+4HZ2hTfshABrSgH6q44QQmoWoGeMaLh2ebmkIuIVC5EGaUw1AGh5v/Avy7yM1q1HicQ0N5w1gQuPB2cI6S1wILFiDtqz0HMHuVlI4+QO+5QgN8n04B7k1BHR9hvAC9uhaFnvzm1/fqIIzNMhGz0M3jgrJixIC3nKkt9zx1xssvaeAP2ON6OSPPyrOQswmc0Lz49lNwc6EwGQjT+TDA=; bm_sv=02B474DFADB756FAFB89C8A4B229062B~pJ+wmaxB+Vu8JTvwMdW4baHanemc9b/fqAV5OmuKY4DNH2TILD7BI8qTR282W0qXgnJH8ZEFSRnulhudPoL/jl5ITObdCK7wq+Pf2CYXSUswPRpkzsEZqnrFpZ9GzeFrxQtHARMT+j1B5rOJo90Apg==; ak_bmsc=78DD4431CE033BB5071E156757E2F7DF17D7BE66EB6200008D346A607C16874C~plbPbVKoJO21RQSMk5yQ2G9/8cDPrXXnln2aNG4m6dqoO8d294YqzEpbTB8LDlKtWiC9cLcgvutMp6PabPd8hPUHZXRH5MwpHTXKrphaSNqr6/Ie5XnIoiU6vsVggYS9NMkuO+M26OOsMCnjpKl8eE3jixW84onLt+d4k8eisyvE6fD1oTaymv+OBprPSQGV5hK8wbeLUVBh3N6mzME9goARPj7xKt5KBzqw2lSxrfRTLcZcfOi/hGxW5cbkwbJKUY; incap_ses_246_1968037=CtlmceojxQdYv23q/PdpA4FGamAAAAAASfQeU3KdKE+BklYWnSXENg==; OptanonConsent=isIABGlobal=false&datestamp=Mon+Apr+05+2021+01%3A06%3A42+GMT%2B0200+(Central+European+Summer+Time)&version=6.14.0&hosts=&consentId=7414b0eb-19c7-4eb9-a6bd-6a49a7f6a6d0&interactionCount=1&landingPath=NotLandingPage&groups=C0002%3A1%2CC0004%3A1%2CC0003%3A1%2CC0001%3A1&geolocation=DE%3BRP&AwaitingReconsent=false; c_rurl=https%3A//www.amd.com/de/direct-buy/de/",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"git_url\": \"https://github.com/ai-overflow/example-project\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/project?id={{my_variable}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"project"
+					],
+					"query": [
+						{
+							"key": "productId",
+							"value": "5450881600",
+							"disabled": true
+						},
+						{
+							"key": "id",
+							"value": "{{my_variable}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

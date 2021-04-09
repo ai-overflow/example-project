@@ -1,15 +1,19 @@
 # EntryPoint is the first request which will be executed after the form has been posted
 entryPoint: "main"
+# Project Specific Data
+name: "Test Project 123"
+description: "Bla Bla Bla Mr. Freeman"
 # Connection contains all connections which can be initialized
+# WIP: find open format with tooling like postman?
 connection:
   main:
     - port: 6666
     - protocol: "HTTP" # HTTPS
-    - path: "/image/test/${input.algo}/"
+    - path: "/image/test/{{input.algo}}/"
     - method: "POST" # GET, PUT, DELETE
     - params:
-      - bla: "${input.sliderA}"
-      - blubb: "{input.inputA}"
+      - bla: "{{input.sliderA}}"
+      - blubb: "{{input.inputA}}"
     - headers:
       - Cookie: "SESSION-xyz"
       - User-Agent: "Something Special"
@@ -18,18 +22,22 @@ connection:
       - input:
         - mainImage:
           - type: "file"
-          - value: "${input.image}"
+          - value: "{{input.image}}"
           - contentType: "auto" # image/jpg, etc.
         - testValue:
           - type: "text"
-          - value: "${input.checkboxA}"
+          - value: "{{input.checkboxA}}"
   imageURL:
     - port: 6666
     - protocol: "HTTP"
-    - path: "/image/test/${input.algo}/"
+    - path: "/image/test/{{input.algo}}/"
     - method: "GET"
     - params:
-      - id: "${vars.id}"
+      - id: "{{vars.id}}"
+# Alternative connection:
+# connection:
+#     import: "postman/AI.postman_collection.json"
+#     type: "postman" # (this is undocumented, should be using sth. like openAPI?)
 # Input contains all form elements. Can be used as variables for connection or output
 # Types:
 #  - image (base64 string or raw bytes),
@@ -55,7 +63,7 @@ input:
       - max:
         - width: 3840
         - height: 2160
-      - resize: false # false, "min", "max", "optimal"
+      # - resize: false # false, "min", "max", "optimal" (removed)
   - algo:
     - type: "select"
     - values:
@@ -76,13 +84,15 @@ input:
   - inputA:
     - type: "input"
     - values:
-      - min: 100
-      - max: 5000
+      - regex: "[A-Za-z0-9]+"
+      - length:
+        - min: 100
+        - max: 5000
 # Output
 output:
   - outputA:
     - type: "list"
-    - repeat: true
+    - repeat: true # true: list of lists
     - format:
       - multipleValues: true
       - labelName: "description"
@@ -90,7 +100,7 @@ output:
       - representation: "percentageBar" # percentageBar, discretePercentageBar
   - outputB:
     - type: "polygon"
-    - repeat: true
+    - repeat: true # true: list of polygons
     - format:
       - labelName: "description"
       - labelValue: "score"
@@ -99,7 +109,7 @@ output:
       - overlay: "input.image" # must be input or output (output.outputC)
   - outputC:
     - type: "image"
-    - repeat: false
+    - repeat: false # true: list of images
     - format:
       - labelValue: "src"
       - type: "base64"
@@ -109,14 +119,14 @@ output:
         - height: 720
   - outputD:
     - type: "image"
-    - repeat: false
+    - repeat: false # true: list of images
     - format:
       - labelValue: "root[0]/link[0]/src"
       - type: "url"
       - connection:
         - ref: "connection.imageURL"
         - vars:
-            - id: "${output{root[0]/link[0]/src}}"
+            - id: "{{output{root[0]/link[0]/src}}}"
       - dimensions:
         - width: 1280
         - height: 720

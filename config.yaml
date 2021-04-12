@@ -7,33 +7,33 @@ description: "Bla Bla Bla Mr. Freeman"
 # WIP: find open format with tooling like postman?
 connection:
   main:
-    - port: 6666
-    - protocol: "HTTP" # HTTPS
-    - path: "/image/test/{{input.algo}}/"
-    - method: "POST" # GET, PUT, DELETE
-    - params:
-      - bla: "{{input.sliderA}}"
-      - blubb: "{{input.inputA}}"
-    - headers:
-      - Cookie: "SESSION-xyz"
-      - User-Agent: "Something Special"
-    - body:
-      - type: "form-data" # binary(single input: [- input: "${input.abc}"]), raw(single input), form-data(multi input)
-      - input:
-        - mainImage:
-          - type: "file"
-          - value: "{{input.image}}"
-          - contentType: "auto" # image/jpg, etc.
-        - testValue:
-          - type: "text"
-          - value: "{{input.checkboxA}}"
+    port: 6666
+    protocol: "HTTP" # HTTPS
+    path: "/image/test/{{input.algo}}/"
+    method: "POST" # GET, PUT, DELETE
+    params:
+      bla: "{{input.sliderA}}"
+      blubb: "{{input.inputA}}"
+    headers:
+      Cookie: "SESSION-xyz"
+      User-Agent: "Something Special"
+    body:
+      type: "form-data" # binary(single input: [input: "${input.abc}"]), raw(single input), form-data(multi input)
+      input:
+        mainImage:
+          type: "file"
+          value: "{{input.image}}"
+          contentType: "auto" # image/jpg, etc.
+        testValue:
+          type: "text"
+          value: "{{input.checkboxA}}"
   imageURL:
-    - port: 6666
-    - protocol: "HTTP"
-    - path: "/image/test/{{input.algo}}/"
-    - method: "GET"
-    - params:
-      - id: "{{vars.id}}"
+    port: 6666
+    protocol: "HTTP"
+    path: "/image/test/{{input.algo}}/"
+    method: "GET"
+    params:
+      id: "{{vars.id}}"
 # Alternative connection:
 # connection:
 #     import: "postman/AI.postman_collection.json"
@@ -49,88 +49,88 @@ connection:
 #  - checkbox (csv)
 #  - radio (string)
 input:
-  - image:
-    - type: "image" # image, input, slider, textarea, select, multiselect, checkbox, radio
-    - accepts:
+  image:
+    type: "image" # image, input, slider, textarea, select, multiselect, checkbox, radio
+    accepts:
         - "image/jpg"
         - "image/gif"
         - "image/png"
-    - value: "binary" # binary, base64
-    - dimensions: # "min", "max", "optimal"
-      - min:
-        - width: 1280
-        - height: 720
-      - max:
-        - width: 3840
-        - height: 2160
-      # - resize: false # false, "min", "max", "optimal" (removed)
-  - algo:
-    - type: "select"
-    - values:
+    value: "binary" # binary, base64
+    dimensions: # "min", "max", "optimal"
+      min:
+        width: 1280
+        height: 720
+      max:
+        width: 3840
+        height: 2160
+      # resize: false # false, "min", "max", "optimal" (removed)
+  algo:
+    type: "select"
+    values:
       - "DudeA"
       - "DudeB"
       - "DudeC"
-  - sliderA:
-    - type: "slider"
-    - values:
-      - min: 0
-      - max: 100
-  - checkboxA:
-    - type: "checkbox"
-    - values:
+  sliderA:
+    type: "slider"
+    values:
+      min: 0
+      max: 100
+  checkboxA:
+    type: "checkbox"
+    values:
       - "DudeA"
       - "DudeB"
       - "DudeC"
-  - inputA:
-    - type: "input"
-    - values:
-      - regex: "[A-Za-z0-9]+"
-      - length:
-        - min: 100
-        - max: 5000
+  inputA:
+    type: "input"
+    values:
+      regex: "[A-Za-z0-9]+"
+      length:
+        min: 100
+        max: 5000
 # Output
 output:
-  - outputA:
-    - type: "list"
-    - repeat: true # true: list of lists
-    - format:
-      - multipleValues: true
-      - labelName: "description"
-      - labelValue: "score"
-      - representation: "percentageBar" # percentageBar, discretePercentageBar
-  - outputB:
-    - type: "polygon"
-    - repeat: true # true: list of polygons
-    - format:
-      - labelName: "description"
-      - labelValue: "score"
-      - verticesName: "vertices"
-      - representation: "polygon" # dots ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
-      - overlay: "input.image" # must be input or output (output.outputC)
-  - outputC:
-    - type: "image"
-    - repeat: false # true: list of images
-    - format:
-      - labelValue: "src"
-      - type: "base64"
-      - mime: "image/jpeg"
-      - dimensions:
-        - width: 1280
-        - height: 720
-  - outputD:
-    - type: "image"
-    - repeat: false # true: list of images
-    - format:
-      - labelValue: "root[0]/link[0]/src"
-      - type: "url"
-      - connection:
-        - ref: "connection.imageURL"
-        - vars:
-            - id: "{{output{root[0]/link[0]/src}}}"
-      - dimensions:
-        - width: 1280
-        - height: 720
-  - outputE:
-    - type: "html"
-    - format:
-      - labelValue: "root[0]/link[0]/src"
+  outputA:
+    type: "list"
+    repeat: true # true: list of lists
+    format:
+      multipleValues: true
+      labelName: "description"
+      labelValue: "score"
+      representation: "percentageBar" # percentageBar, discretePercentageBar
+  outputB:
+    type: "polygon"
+    repeat: true # true: list of polygons
+    format:
+      labelName: "description"
+      labelValue: "score"
+      verticesName: "vertices"
+      representation: "polygon" # dots ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
+      overlay: "input.image" # must be input or output (output.outputC)
+  outputC:
+    type: "image"
+    repeat: false # true: list of images
+    format:
+      labelValue: "src"
+      type: "base64"
+      mime: "image/jpeg"
+      dimensions:
+        width: 1280
+        height: 720
+  outputD:
+    type: "image"
+    repeat: false # true: list of images
+    format:
+      labelValue: "root[0]/link[0]/src"
+      type: "url"
+      connection:
+        ref: "connection.imageURL"
+        vars:
+            id: "{{output{root[0]/link[0]/src}}}"
+      dimensions:
+        width: 1280
+        height: 720
+  outputE:
+    type: "html"
+    format:
+      labelValue: "root[0]/link[0]/src"

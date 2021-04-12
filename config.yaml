@@ -7,7 +7,7 @@ description: "Bla Bla Bla Mr. Freeman"
 # WIP: find open format with tooling like postman?
 connection:
   main:
-    port: 6666
+    port: 8085
     protocol: "HTTP" # HTTPS
     path: "/image/test/{{input.algo}}/"
     method: "POST" # GET, PUT, DELETE

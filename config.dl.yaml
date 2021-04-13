@@ -31,9 +31,12 @@ connection:
     port: 6666
     protocol: "HTTP"
     path: "/image/test/{{input.algo}}/"
-    method: "GET"
+    method: GET
     params:
       id: "{{vars.id}}"
+    body:
+      type: raw
+      input: "abc"
 # Alternative connection:
 # connection:
 #     import: "postman/AI.postman_collection.json"

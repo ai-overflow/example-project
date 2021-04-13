@@ -29,16 +29,213 @@
             "type": "object",
             "description": "List all Connection which will be used for this project",
             "patternProperties": {
-                "^[a-z][a-z0-9_-]+$": {
+                "^[a-z][a-zA-Z0-9_-]+$": {
                     "type": "object",
+                    "description": "Name of the connection. Can be used in any variable type via {{input.NAME}}",
                     "properties": {
                         "port": {
                             "type": "number",
                             "description": "Port Number"
+                        },
+                        "protocol": {
+                            "type": "string",
+                            "description": "Connection Protocol",
+                            "oneOf": [
+                                {
+                                    "const": "HTTP",
+                                    "description": "Connection is via plain HTTP"
+                                },
+                                {
+                                    "const": "HTTPS",
+                                    "description": "Connection is via secure HTTPS. Not necessary if local adress"
+                                }
+                            ]
+                        },
+                        "path": {
+                            "type": "string",
+                            "pattern": "^\/.+\/$",
+                            "description": "Web Path which should be accessed. Must start and end with '/'",
+                            "examples": [
+                                "/image/test/{{input.algo}}/",
+                                "/image/"
+                            ]
+                        },
+                        "method": {
+                            "type": "string",
+                            "description": "HTTP Method",
+                            "oneOf": [
+                                {
+                                    "const": "GET"
+                                },
+                                {
+                                    "const": "PUT"
+                                },
+                                {
+                                    "const": "PATCH"
+                                },
+                                {
+                                    "const": "POST"
+                                },
+                                {
+                                    "const": "DELETE"
+                                },
+                                {
+                                    "const": "HEAD"
+                                },
+                                {
+                                    "const": "COPY"
+                                },
+                                {
+                                    "const": "OPTIONS"
+                                },
+                                {
+                                    "const": "LINK"
+                                },
+                                {
+                                    "const": "UNLINK"
+                                },
+                                {
+                                    "const": "PURGE"
+                                },
+                                {
+                                    "const": "LOCK"
+                                },
+                                {
+                                    "const": "UNLOCK"
+                                },
+                                {
+                                    "const": "PROPFIND"
+                                },
+                                {
+                                    "const": "VIEW"
+                                }
+                            ]
+                        },
+                        "params": {
+                            "type": "object",
+                            "description": "Additional Query Parameter",
+                            "defaultSnippets": [
+                                {
+                                    "label": "Query Parameter for ?q=input_text, with input_text as a variable",
+                                    "body": {
+                                        "q": "\"{{input.text}}\""
+                                    }
+                                }
+                            ],
+                            "patternProperties": {
+                                "^[A-Za-z0-9_-]+$": {
+                                    "type": "string",
+                                    "description": "Query parameter, will be called like ?q=input"
+                                }
+                            }
+                        },
+                        "headers": {
+                            "type": "object",
+                            "description": "Additional Header data",
+                            "defaultSnippets": [
+                                {
+                                    "label": "Sets the default user Agent to Firefox 47.0",
+                                    "body": {
+                                        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
+                                    }
+                                }
+                            ],
+                            "patternProperties": {
+                                "^[A-Za-z0-9_-]+$": {
+                                    "type": "string",
+                                    "description": "Header data"
+                                }
+                            }
+                        },
+                        "body": {
+                            "type": "object",
+                            "description": "Body payload data",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "description": "payload type.  Can be form-data, binary or raw",
+                                    "oneOf": [
+                                        {
+                                            "const": "form-data",
+                                            "description": "Form data, in key-value-pair format required"
+                                        },
+                                        {
+                                            "const": "binary",
+                                            "description": "Binary data, e.g. image file"
+                                        },
+                                        {
+                                            "const": "raw",
+                                            "description": "Raw Text data, e.g. JSON, HTML, XML"
+                                        }
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "type"
+                            ],
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "const": "form-data"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "input": {
+                                        "type": "object",
+                                        "description": "Form data key-value-pair",
+                                        "patternProperties": {
+                                            "^[A-Za-z0-9_-]+$": {
+                                                "description": "Key of the form data",
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "description": "File Type, can be file or text",
+                                                        "type": "string",
+                                                        "oneOf": [
+                                                            {
+                                                                "const": "file",
+                                                                "description": "Value is file Type, must be binary data. Can be a variable"
+                                                            },
+                                                            {
+                                                                "const": "text",
+                                                                "description": "Value is plain text"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "value": {
+                                                        "description": "value of form data",
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "else": {
+                                "properties": {
+                                    "input": {
+                                        "type": "string",
+                                        "description": "body data to sent to the server"
+                                    }
+                                }
+                            }
                         }
-                    }
+                    },
+                    "required": [
+                        "port",
+                        "protocol",
+                        "path",
+                        "method"
+                    ]
                 }
             }
         }
-    }
+    },
+    "required": [
+        "entryPoint",
+        "connection"
+    ]
 }

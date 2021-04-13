@@ -34,7 +34,7 @@
                     "description": "Name of the connection. Can be used in any variable type via {{input.NAME}}",
                     "properties": {
                         "port": {
-                            "type": "number",
+                            "type": "integer",
                             "description": "Port Number",
                             "minimum": 1024,
                             "maximum": 65535
@@ -239,7 +239,7 @@
             "description": "Input parameters. This parameters will be transformed into GUI elements",
             "patternProperties": {
                 "^[a-z][a-zA-Z0-9_-]+$": {
-                    "description": "Name of the input Element. Can be used as a variable for various purposes. Reference with: {{input.NAME}",
+                    "description": "Name of the input Element. Can be used as a variable for various purposes. Reference with: {{input.NAME}}",
                     "type": "object",
                     "properties": {
                         "type": {
@@ -280,6 +280,179 @@
                                 }
                             ]
                         }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "image"
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "accepts": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        "image/jpg",
+                                        "image/jpeg",
+                                        "image/gif",
+                                        "image/png"
+                                    ]
+                                }
+                            },
+                            "value": {
+                                "type": "string",
+                                "enum": [
+                                    "binary",
+                                    "base64"
+                                ]
+                            },
+                            "dimensions": {
+                                "type": "object",
+                                "description": "Accepted dimensions of the given image",
+                                "properties": {
+                                    "min": {
+                                        "type": "object",
+                                        "description": "minimum size of the image",
+                                        "properties": {
+                                            "width": {
+                                                "type": "integer"
+                                            },
+                                            "height": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "required": [
+                                            "width",
+                                            "height"
+                                        ]
+                                    },
+                                    "max": {
+                                        "type": "object",
+                                        "description": "maximum size of the image",
+                                        "properties": {
+                                            "width": {
+                                                "type": "integer"
+                                            },
+                                            "height": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "required": [
+                                            "width",
+                                            "height"
+                                        ]
+                                    },
+                                    "optimal": {
+                                        "type": "object",
+                                        "description": "optimal size of the image",
+                                        "properties": {
+                                            "width": {
+                                                "type": "integer"
+                                            },
+                                            "height": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "required": [
+                                            "width",
+                                            "height"
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "required": [
+                            "value"
+                        ]
+                    },
+                    "else": {
+                        "if": {
+                            "properties": {
+                                "type": {
+                                    "enum": [
+                                        "select",
+                                        "checkbox",
+                                        "radio",
+                                        "multiselect"
+                                    ]
+                                }
+                            }
+                        },
+                        "then": {
+                            "properties": {
+                                "values": {
+                                    "type": "array",
+                                    "description": "Selectable value",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "else": {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "enum": [
+                                            "input",
+                                            "textarea"
+                                        ]
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "values": {
+                                        "type": "object",
+                                        "description": "input limitations",
+                                        "properties": {
+                                            "regex": {
+                                                "description": "match the input against this regular expression",
+                                                "type": "string"
+                                            },
+                                            "length": {
+                                                "type": "object",
+                                                "description": "length limits for input",
+                                                "properties": {
+                                                    "min": {
+                                                        "type": "integer"
+                                                    },
+                                                    "max": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "else": {
+                                "properties": {
+                                    "values": {
+                                        "type": "object",
+                                        "description": "input limitations",
+                                        "properties": {
+                                            "min": {
+                                                "type": "number"
+                                            },
+                                            "max": {
+                                                "type": "number"
+                                            },
+                                            "stepSize": {
+                                                "type": "number"
+                                            }
+                                        },
+                                        "required": ["min", "max", "stepSize"]
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -287,6 +460,7 @@
     },
     "required": [
         "entryPoint",
+        "name",
         "connection",
         "input"
     ]

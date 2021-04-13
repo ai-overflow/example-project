@@ -58,7 +58,7 @@ input:
         - "image/jpg"
         - "image/gif"
         - "image/png"
-    value: "binary" # binary, base64
+    value: binary # binary, base64
     dimensions: # "min", "max", "optimal"
       min:
         width: 1280
@@ -78,6 +78,7 @@ input:
     values:
       min: 0
       max: 100
+      stepSize: 0.1
   checkboxA:
     type: "checkbox"
     values:

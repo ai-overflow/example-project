@@ -17,13 +17,19 @@
         },
         "name": {
             "type": "string",
-            "description": "Project Title. Will be used as a tab label"
+            "description": "Project Title. Will be used as a tab label",
+            "examples": [
+                "Example Project"
+            ]
         },
         "description": {
             "type": "string",
             "minLength": 10,
             "maxLength": 300,
-            "description": "Project Description. May be used to describe the project"
+            "description": "Project Description. May be used to describe the project",
+            "examples": [
+                "This is an example project which is coloring an image"
+            ]
         },
         "connection": {
             "type": "object",
@@ -37,7 +43,11 @@
                             "type": "integer",
                             "description": "Port Number",
                             "minimum": 1024,
-                            "maximum": 65535
+                            "maximum": 65535,
+                            "examples": [
+                                8080,
+                                8443
+                            ]
                         },
                         "protocol": {
                             "type": "string",
@@ -65,52 +75,22 @@
                         "method": {
                             "type": "string",
                             "description": "HTTP Method",
-                            "oneOf": [
-                                {
-                                    "const": "GET"
-                                },
-                                {
-                                    "const": "PUT"
-                                },
-                                {
-                                    "const": "PATCH"
-                                },
-                                {
-                                    "const": "POST"
-                                },
-                                {
-                                    "const": "DELETE"
-                                },
-                                {
-                                    "const": "HEAD"
-                                },
-                                {
-                                    "const": "COPY"
-                                },
-                                {
-                                    "const": "OPTIONS"
-                                },
-                                {
-                                    "const": "LINK"
-                                },
-                                {
-                                    "const": "UNLINK"
-                                },
-                                {
-                                    "const": "PURGE"
-                                },
-                                {
-                                    "const": "LOCK"
-                                },
-                                {
-                                    "const": "UNLOCK"
-                                },
-                                {
-                                    "const": "PROPFIND"
-                                },
-                                {
-                                    "const": "VIEW"
-                                }
+                            "enum": [
+                                "GET",
+                                "PUT",
+                                "PATCH",
+                                "POST",
+                                "DELETE",
+                                "HEAD",
+                                "COPY",
+                                "OPTIONS",
+                                "LINK",
+                                "UNLINK",
+                                "PURGE",
+                                "LOCK",
+                                "UNLOCK",
+                                "PROPFIND",
+                                "VIEW"
                             ]
                         },
                         "params": {
@@ -118,9 +98,9 @@
                             "description": "Additional Query Parameter",
                             "defaultSnippets": [
                                 {
-                                    "label": "Query Parameter for ?q=input_text, with input_text as a variable",
+                                    "label": "Query Parameter for ?q=input_query, with input_query as a variable from the input 'query'",
                                     "body": {
-                                        "q": "\"{{input.text}}\""
+                                        "q": "\"{{input.query}}\""
                                     }
                                 }
                             ],
@@ -136,7 +116,7 @@
                             "description": "Additional Header data",
                             "defaultSnippets": [
                                 {
-                                    "label": "Sets the default user Agent to Firefox 47.0",
+                                    "label": "User-Agent: Firefox 47.0",
                                     "body": {
                                         "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
                                     }
@@ -220,10 +200,42 @@
                                 "properties": {
                                     "input": {
                                         "type": "string",
-                                        "description": "body data to sent to the server"
+                                        "description": "body data to sent to the server",
+                                        "examples": [
+                                            "\"{}\"",
+                                            "\"{'q': '{{input.text}}'}\""
+                                        ]
                                     }
                                 }
-                            }
+                            },
+                            "defaultSnippets": [
+                                {
+                                    "label": "form-data",
+                                    "body": {
+                                        "type": "form-data",
+                                        "input": {
+                                            "example": {
+                                                "type": "text",
+                                                "value": "lorem ipsum"
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "label": "raw",
+                                    "body": {
+                                        "type": "raw",
+                                        "input": "\"{'json': true}\""
+                                    }
+                                },
+                                {
+                                    "label": "binary",
+                                    "body": {
+                                        "type": "binary",
+                                        "input": "\"{{input.image}}\""
+                                    }
+                                }
+                            ]
                         }
                     },
                     "required": [
@@ -448,7 +460,11 @@
                                                 "type": "number"
                                             }
                                         },
-                                        "required": ["min", "max", "stepSize"]
+                                        "required": [
+                                            "min",
+                                            "max",
+                                            "stepSize"
+                                        ]
                                     }
                                 }
                             }
@@ -463,5 +479,32 @@
         "name",
         "connection",
         "input"
+    ],
+    "defaultSnippets": [
+        {
+            "label": "example project",
+            "body": {
+                "entryPoint": "main",
+                "name": "Example Project",
+                "connection": {
+                    "main": {
+                        "port": 8085,
+                        "protocol": "HTTP",
+                        "path": "/image/test/{{input.text}}/",
+                        "method": "GET"
+                    }
+                },
+                "input": {
+                    "text": {
+                        "type": "slider",
+                        "values": {
+                            "min": 0,
+                            "max": 1,
+                            "stepSize": 0.01
+                        }
+                    }
+                }
+            }
+        }
     ]
 }

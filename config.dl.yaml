@@ -35,8 +35,8 @@ connection:
     params:
       id: "{{vars.id}}"
     body:
-      type: raw
-      input: "abc"
+      type: binary
+      input: "{{input.image}}"
 # Alternative connection:
 # connection:
 #     import: "postman/AI.postman_collection.json"

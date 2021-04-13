@@ -679,3 +679,4 @@ FodyWeavers.xsd
 *.tlog
 
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,visualstudio,intellij+all
+src/supervisord.pid

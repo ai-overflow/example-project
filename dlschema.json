@@ -35,7 +35,9 @@
                     "properties": {
                         "port": {
                             "type": "number",
-                            "description": "Port Number"
+                            "description": "Port Number",
+                            "minimum": 1024,
+                            "maximum": 65535
                         },
                         "protocol": {
                             "type": "string",
@@ -56,8 +58,8 @@
                             "pattern": "^\/.+\/$",
                             "description": "Web Path which should be accessed. Must start and end with '/'",
                             "examples": [
-                                "/image/test/{{input.algo}}/",
-                                "/image/"
+                                "\"/image/test/{{input.algo}}/\"",
+                                "\"/image/\""
                             ]
                         },
                         "method": {
@@ -232,10 +234,60 @@
                     ]
                 }
             }
+        },
+        "input": {
+            "description": "Input parameters. This parameters will be transformed into GUI elements",
+            "patternProperties": {
+                "^[a-z][a-zA-Z0-9_-]+$": {
+                    "description": "Name of the input Element. Can be used as a variable for various purposes. Reference with: {{input.NAME}",
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "description": "Type of the input element",
+                            "oneOf": [
+                                {
+                                    "const": "image",
+                                    "description": "Requests an image as raw bytes or base64. Value depends on 'value' parameter"
+                                },
+                                {
+                                    "const": "input",
+                                    "description": "Single line raw text input. Returns a string"
+                                },
+                                {
+                                    "const": "slider",
+                                    "description": "Slider. Can have min and max value, defaults to 0 to 100. Returns a number"
+                                },
+                                {
+                                    "const": "textarea",
+                                    "description": "Multi-line raw text input"
+                                },
+                                {
+                                    "const": "select",
+                                    "description": "select different given attributes"
+                                },
+                                {
+                                    "const": "multiselect",
+                                    "description": "Select multiple different attributes. Returns a csv of elements"
+                                },
+                                {
+                                    "const": "checkbox",
+                                    "description": "Select multiple different attributes. Returns a csv of elements"
+                                },
+                                {
+                                    "const": "radio",
+                                    "description": "Select single attribute from a list of attributes. Returns attribute as string"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
         }
     },
     "required": [
         "entryPoint",
-        "connection"
+        "connection",
+        "input"
     ]
 }

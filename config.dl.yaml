@@ -3,6 +3,8 @@ entryPoint: "main"
 # Project Specific Data
 name: "Test Project 123"
 description: "Bla Bla Bla Mr. Freeman"
+authors:
+  - "John Doe"
 # Connection contains all connections which can be initialized
 # WIP: find open format with tooling like postman?
 connection:

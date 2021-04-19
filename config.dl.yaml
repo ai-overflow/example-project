@@ -55,6 +55,7 @@ connection:
 #  - radio (string)
 input:
   image:
+    label: "Image"
     type: "image" # image, input, slider, textarea, select, multiselect, checkbox, radio
     accepts:
         - "image/jpg"
@@ -70,24 +71,28 @@ input:
         height: 2160
       # resize: false # false, "min", "max", "optimal" (removed)
   algo:
+    label: "Algorithm"
     type: "select"
     values:
       - "DudeA"
       - "DudeB"
       - "DudeC"
   sliderA:
+    label: "Bias"
     type: "slider"
     values:
       min: 0
       max: 100
       stepSize: 0.1
   checkboxA:
+    label: "Creator"
     type: "checkbox"
     values:
       - "DudeA"
       - "DudeB"
       - "DudeC"
   inputA:
+    label: "Name"
     type: "input"
     values:
       regex: "[A-Za-z0-9]+"

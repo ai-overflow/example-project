@@ -264,6 +264,11 @@
                     "description": "Name of the input Element. Can be used as a variable for various purposes. Reference with: {{input.NAME}}",
                     "type": "object",
                     "properties": {
+                        "label": {
+                            "type":"string",
+                            "description": "Human readable label to describe the input",
+                            "examples": ["Username", "Select Color"]
+                        },
                         "type": {
                             "type": "string",
                             "description": "Type of the input element",
@@ -304,7 +309,8 @@
                         }
                     },
                     "required": [
-                        "type"
+                        "type",
+                        "label"
                     ],
                     "if": {
                         "properties": {
@@ -528,6 +534,7 @@
                 "input": {
                     "slider": {
                         "type": "slider",
+                        "label": "Seed",
                         "values": {
                             "min": 0,
                             "max": 1,

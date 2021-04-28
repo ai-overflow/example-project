@@ -57,19 +57,20 @@ input:
   image:
     label: "Image"
     type: "image" # image, input, slider, textarea, select, multiselect, checkbox, radio
-    accepts:
-        - "image/jpg"
-        - "image/gif"
-        - "image/png"
-    value: binary # binary, base64
-    dimensions: # "min", "max", "optimal"
-      min:
-        width: 1280
-        height: 720
-      max:
-        width: 3840
-        height: 2160
-      # resize: false # false, "min", "max", "optimal" (removed)
+    values:
+      accepts:
+          - "image/jpg"
+          - "image/gif"
+          - "image/png"
+      type: binary # binary, base64
+      dimensions: # "min", "max", "optimal"
+        min:
+          width: 1280
+          height: 720
+        max:
+          width: 3840
+          height: 2160
+        # resize: false # false, "min", "max", "optimal" (removed)
   algo:
     label: "Algorithm"
     type: "select"
@@ -99,7 +100,7 @@ input:
       length:
         min: 100
         max: 5000
-# Output
+# Output (allow maps / iframe)
 output:
   outputA:
     type: "list"

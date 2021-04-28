@@ -29,7 +29,12 @@
                 "type": "string"
             },
             "examples": [
-                {"authors": ["John Doe", "Max Mustermann"]}
+                {
+                    "authors": [
+                        "John Doe",
+                        "Max Mustermann"
+                    ]
+                }
             ]
         },
         "description": {
@@ -250,7 +255,6 @@
                     },
                     "required": [
                         "port",
-                        "protocol",
                         "path",
                         "method"
                     ]
@@ -265,9 +269,12 @@
                     "type": "object",
                     "properties": {
                         "label": {
-                            "type":"string",
+                            "type": "string",
                             "description": "Human readable label to describe the input",
-                            "examples": ["Username", "Select Color"]
+                            "examples": [
+                                "Username",
+                                "Select Color"
+                            ]
                         },
                         "type": {
                             "type": "string",
@@ -321,82 +328,88 @@
                     },
                     "then": {
                         "properties": {
-                            "accepts": {
-                                "type": "array",
-                                "items": {
-                                    "type": "string",
-                                    "enum": [
-                                        "image/jpg",
-                                        "image/jpeg",
-                                        "image/gif",
-                                        "image/png"
-                                    ]
-                                }
-                            },
-                            "value": {
-                                "type": "string",
-                                "enum": [
-                                    "binary",
-                                    "base64"
-                                ]
-                            },
-                            "dimensions": {
-                                "type": "object",
-                                "description": "Accepted dimensions of the given image",
+                            "values": {
+                                "description": "Configuration of the image input",
                                 "properties": {
-                                    "min": {
-                                        "type": "object",
-                                        "description": "minimum size of the image",
-                                        "properties": {
-                                            "width": {
-                                                "type": "integer"
-                                            },
-                                            "height": {
-                                                "type": "integer"
-                                            }
-                                        },
-                                        "required": [
-                                            "width",
-                                            "height"
+                                    "accepts": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "enum": [
+                                                "image/jpg",
+                                                "image/jpeg",
+                                                "image/gif",
+                                                "image/png"
+                                            ]
+                                        }
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "binary",
+                                            "base64"
                                         ]
                                     },
-                                    "max": {
+                                    "dimensions": {
                                         "type": "object",
-                                        "description": "maximum size of the image",
+                                        "description": "Accepted dimensions of the given image",
                                         "properties": {
-                                            "width": {
-                                                "type": "integer"
+                                            "min": {
+                                                "type": "object",
+                                                "description": "minimum size of the image",
+                                                "properties": {
+                                                    "width": {
+                                                        "type": "integer"
+                                                    },
+                                                    "height": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "width",
+                                                    "height"
+                                                ]
                                             },
-                                            "height": {
-                                                "type": "integer"
-                                            }
-                                        },
-                                        "required": [
-                                            "width",
-                                            "height"
-                                        ]
-                                    },
-                                    "optimal": {
-                                        "type": "object",
-                                        "description": "optimal size of the image",
-                                        "properties": {
-                                            "width": {
-                                                "type": "integer"
+                                            "max": {
+                                                "type": "object",
+                                                "description": "maximum size of the image",
+                                                "properties": {
+                                                    "width": {
+                                                        "type": "integer"
+                                                    },
+                                                    "height": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "width",
+                                                    "height"
+                                                ]
                                             },
-                                            "height": {
-                                                "type": "integer"
+                                            "optimal": {
+                                                "type": "object",
+                                                "description": "optimal size of the image",
+                                                "properties": {
+                                                    "width": {
+                                                        "type": "integer"
+                                                    },
+                                                    "height": {
+                                                        "type": "integer"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "width",
+                                                    "height"
+                                                ]
                                             }
-                                        },
-                                        "required": [
-                                            "width",
-                                            "height"
-                                        ]
+                                        }
                                     }
-                                }
+                                },
+                                "required": ["type"]
                             }
                         },
                         "required": [
-                            "value"
+                            "values"
                         ]
                     },
                     "else": {
@@ -422,7 +435,9 @@
                                     }
                                 }
                             },
-                            "required": ["values"]
+                            "required": [
+                                "values"
+                            ]
                         },
                         "else": {
                             "if": {
@@ -444,7 +459,9 @@
                                             "regex": {
                                                 "description": "match the input against this regular expression",
                                                 "type": "string",
-                                                "examples": ["\"[A-Za-z0-9]+\""]
+                                                "examples": [
+                                                    "\"[A-Za-z0-9]+\""
+                                                ]
                                             },
                                             "length": {
                                                 "type": "object",
@@ -461,7 +478,9 @@
                                         }
                                     }
                                 },
-                                "required": ["values"]
+                                "required": [
+                                    "values"
+                                ]
                             },
                             "else": {
                                 "properties": {
@@ -487,7 +506,9 @@
                                     }
                                 }
                             },
-                            "required": ["values"]
+                            "required": [
+                                "values"
+                            ]
                         }
                     }
                 }
@@ -503,7 +524,12 @@
                         "type": {
                             "type": "string",
                             "description": "",
-                            "enum": ["list", "polygon", "image", "html"]
+                            "enum": [
+                                "list",
+                                "polygon",
+                                "image",
+                                "html"
+                            ]
                         }
                     }
                 }

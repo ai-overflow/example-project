@@ -5,6 +5,9 @@ connection:
     port: 8085
     path: /process/algo/{{input.algo}}/
     method: GET
+    body:
+      type: binary
+      input: "{{input.image}}"
 input:
   algo:
     label: "Algorithm"

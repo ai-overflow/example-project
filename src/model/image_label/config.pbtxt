@@ -1,0 +1,18 @@
+name: "image_label"
+platform: "tensorflow_savedmodel"
+max_batch_size: 8
+
+input [
+  {
+    name: "input_3"
+    data_type: TYPE_FP32
+    dims: [ 32, 32, 3 ]
+  }
+]
+output [
+  {
+    name: "activation_4"
+    data_type: TYPE_FP32
+    dims: [ 193 ]
+  }
+]

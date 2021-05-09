@@ -1,16 +1,20 @@
-######################
-#  THIS FILE IS WIP! #
-######################
+import argparse
+import sys
 
 import tritonclient.http as httpclient
 from tritonclient.utils import InferenceServerException
 import librosa
 import numpy as np
-
-model_name = 'voice_type_recognition'
+from PIL import Image
+import pickle
 
 
 def parse_model_http(model_metadata, model_config):
+    """
+    Check the configuration of a model to make sure it meets the
+    requirements for an image classification network (as expected by
+    this client)
+    """
     if len(model_metadata['inputs']) != 1:
         raise Exception("expecting 1 input, got {}".format(
             len(model_metadata['inputs'])))
@@ -35,63 +39,68 @@ def process_data(row):
         return []
     return ps
 
-
-def postprocess(results, output_names, batch_size):
-    option_dict = ['male', 'female']
+def postprocess_image(results, output_names, fac):
     output_dict = {}
     for output_name in output_names:
         output_dict[output_name] = results.as_numpy(output_name)
-        if len(output_dict[output_name]) != 1:
-            raise Exception("expected {} results for output {}, got {}".format(
-                batch_size, output_name, len(output_dict[output_name])))
 
     output = {}
     for output_name in output_names:
-        for result in output_dict[output_name][0]:
-            if output_dict[output_name][0].dtype.type == np.object_:
-                cls = "".join(chr(x) for x in result).split(':')
-            else:
-                cls = result.split(':')
-            output[output_name] = [float(cls[0]), option_dict[int(cls[1])]]
+        for result in output_dict[output_name]:
+            pred = np.argsort(-result)
+            labels = []
+            for i in pred:
+                labels.append("{} - {}%".format(fac[i], round(result[i] * 100, 2)))
+            output[output_name] = labels
     return output
 
 
-def process_results():
+def triton_process(data, model_name):
     try:
         triton_client = httpclient.InferenceServerClient(url="localhost:8000",
                                                          verbose=False)
     except Exception as e:
         print("context creation failed: " + str(e))
-        return {}
-
+        sys.exit(1)
+    triton_client.unload_model(model_name=model_name)
+    if not triton_client.is_model_ready(model_name=model_name):
+        try:
+            triton_client.load_model(model_name=model_name)
+        except InferenceServerException as e:
+            print("failed to load model: " + str(e))
+            sys.exit(1)
     try:
         model_metadata = triton_client.get_model_metadata(model_name=model_name)
     except InferenceServerException as e:
         print("failed to retrieve the metadata: " + str(e))
-        return {}
-
+        sys.exit(1)
     try:
         model_config = triton_client.get_model_config(model_name=model_name)
     except InferenceServerException as e:
         print("failed to retrieve the config: " + str(e))
-        return {}
-
+        sys.exit(1)
     input_name, output_metadata, batch_size = parse_model_http(
         model_metadata, model_config)
-
-    test_data = process_data("G:/Dokumente/dl/test_m.wav")
-    test_data = np.array([test_data.reshape((128, 128, 1))])
-
-    input_data = [httpclient.InferInput(input_name, test_data.shape, "FP32")]
-    input_data[0].set_data_from_numpy(test_data, binary_data=True)
+    input_data = [httpclient.InferInput(input_name, data.shape, "FP32")]
+    input_data[0].set_data_from_numpy(data, binary_data=True)
     output_names = [output['name'] for output in output_metadata]
-
     outputs = []
     for output_name in output_names:
         outputs.append(httpclient.InferRequestedOutput(output_name,
-                                                       binary_data=True,
-                                                       class_count=1))
-
+                                                       binary_data=True))
     result = triton_client.infer(model_name, input_data, outputs=outputs)
 
-    return postprocess(result, output_names, batch_size)
+    return result, output_names
+
+
+def get_results():
+    name = 'image_label'
+    img = np.asarray([np.array(
+        Image.open("D:/Seafile/Main/Main2/Bilder/tmp/IMG_20200925_100253.jpg")
+            .convert('RGB')
+            .resize((32, 32), Image.ANTIALIAS)
+    )], dtype="float32")
+    result, output_names = triton_process(img, name)
+
+    fac = pickle.load(open("data/img_classification.pickle", "rb"))
+    return postprocess_image(result, output_names, fac)

@@ -6,3 +6,12 @@ services:
       - "8085:80"
     volumes:
       - ./src:/app
+  server:
+    image: nvcr.io/nvidia/tritonserver:21.04-py3
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8002:8002"
+    volumes:
+        - ./models:/models
+    command: tritonserver --model-repository=/models --model-control-mode=explicit

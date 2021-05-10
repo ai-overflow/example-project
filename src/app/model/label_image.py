@@ -1,12 +1,11 @@
-import argparse
+import pickle
 import sys
 
-import tritonclient.http as httpclient
-from tritonclient.utils import InferenceServerException
-import librosa
 import numpy as np
+import tritonclient.http as httpclient
 from PIL import Image
-import pickle
+from tritonclient.utils import InferenceServerException
+from io import BytesIO
 
 
 def parse_model_http(model_metadata, model_config):
@@ -30,14 +29,6 @@ def parse_model_http(model_metadata, model_config):
     return (input_metadata['name'], output_metadata,
             model_config['max_batch_size'])
 
-
-def process_data(row):
-    y, sr = librosa.load(row, duration=2.97)
-    ps = librosa.feature.melspectrogram(y=y, sr=sr)
-    if ps.shape != (128, 128):
-        print("Error in File: " + row)
-        return []
-    return ps
 
 def postprocess_image(results, output_names, fac):
     output_dict = {}
@@ -79,8 +70,7 @@ def triton_process(data, model_name):
     except InferenceServerException as e:
         print("failed to retrieve the config: " + str(e))
         sys.exit(1)
-    input_name, output_metadata, batch_size = parse_model_http(
-        model_metadata, model_config)
+    input_name, output_metadata, batch_size = parse_model_http(model_metadata, model_config)
     input_data = [httpclient.InferInput(input_name, data.shape, "FP32")]
     input_data[0].set_data_from_numpy(data, binary_data=True)
     output_names = [output['name'] for output in output_metadata]
@@ -93,13 +83,14 @@ def triton_process(data, model_name):
     return result, output_names
 
 
-def get_results():
+def get_results(image_data):
     name = 'image_label'
     img = np.asarray([np.array(
-        Image.open("D:/Seafile/Main/Main2/Bilder/tmp/IMG_20200925_100253.jpg")
+        Image.open(BytesIO(image_data))
             .convert('RGB')
             .resize((32, 32), Image.ANTIALIAS)
     )], dtype="float32")
+
     result, output_names = triton_process(img, name)
 
     fac = pickle.load(open("data/img_classification.pickle", "rb"))

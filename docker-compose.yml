@@ -6,7 +6,7 @@ services:
       - "8085:80"
     volumes:
       - ./src:/app
-  server:
+  triton:
     image: nvcr.io/nvidia/tritonserver:21.04-py3
     ports:
       - "8000:8000"

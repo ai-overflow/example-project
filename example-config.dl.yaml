@@ -118,11 +118,12 @@ output:
   outputB:
     type: "polygon"
     repeat: true # true: list of polygons
+    labelName: "Label"
     format:
-      labelName: "description"
-      labelValue: "score"
-      verticesName: "vertices"
-      representation: "polygon" # dots ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
+      labelValue: "{{cmd.json(root/polygons[]/coordinates)}}"
+      polygonName: "{{cmd.json(root/polygons[]/label)}}"
+      color: "{{cmd.json(root/polygons[]/color)}}"
+      representation: "polygon" # filled, polygon (connected), dots; both: ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
       overlay: "input.image" # must be input or output (output.outputC)
   outputC:
     type: "image"

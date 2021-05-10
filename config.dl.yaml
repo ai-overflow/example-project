@@ -21,26 +21,15 @@ input:
     values:
       accepts:
           - "image/jpg"
-          - "image/gif"
           - "image/png"
       type: binary # binary, base64
 output:
-  polygons:
-    type: "polygon"
-    repeat: true # true: list of polygons
-    labelName: "Label"
-    format:
-      labelValue: "{{cmd.json(root/polygons[]/coordinates)}}"
-      polygonName: "{{cmd.json(root/polygons[]/label)}}"
-      color: "{{cmd.json(root/polygons[]/color)}}"
-      representation: "polygon" # filled, polygon (connected), dots; both: ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
-      overlay: "input.image" # must be input or output (output.outputC)
   description:
     label: "List of all Elements"
     type: "list"
     repeat: false # true: list of lists
     format:
       multipleValues: true
-      labelName: "{{cmd.json(root/polygons[]/label)}}"
-      labelValue: ~
-      representation: "text" # percentageBar, discretePercentageBar, text
+      labelName: "{{cmd.json(root/dense_2[]/name)}}"
+      labelValue: "{{cmd.json(root/dense_2[]/certainty)}}"
+      representation: "discretePercentageBar" # percentageBar, discretePercentageBar, text

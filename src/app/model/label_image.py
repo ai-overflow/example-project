@@ -6,6 +6,7 @@ import tritonclient.http as httpclient
 from PIL import Image
 from tritonclient.utils import InferenceServerException
 from io import BytesIO
+import os
 
 
 def parse_model_http(model_metadata, model_config):
@@ -41,19 +42,19 @@ def postprocess_image(results, output_names, fac):
             pred = np.argsort(-result)
             labels = []
             for i in pred:
-                labels.append("{} - {}%".format(fac[i], round(result[i] * 100, 2)))
+                labels.append({'name': fac[i], 'certainty': result[i] * 100})
             output[output_name] = labels
     return output
 
 
 def triton_process(data, model_name):
     try:
-        triton_client = httpclient.InferenceServerClient(url="localhost:8000",
+        triton_client = httpclient.InferenceServerClient(url="triton:8000",
                                                          verbose=False)
     except Exception as e:
         print("context creation failed: " + str(e))
         sys.exit(1)
-    triton_client.unload_model(model_name=model_name)
+    # triton_client.unload_model(model_name=model_name)
     if not triton_client.is_model_ready(model_name=model_name):
         try:
             triton_client.load_model(model_name=model_name)
@@ -93,5 +94,6 @@ def get_results(image_data):
 
     result, output_names = triton_process(img, name)
 
-    fac = pickle.load(open("data/img_classification.pickle", "rb"))
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    fac = pickle.load(open(str(os.path.join(dir_path, "data/img_classification.pickle")), "rb"))
     return postprocess_image(result, output_names, fac)

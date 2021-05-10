@@ -19,9 +19,6 @@ def algo_test(algo):
         logging.warning("Wrong algo: %s" % algo.lower())
         abort(400)
 
-    get_results(request.get_data())
+    results = get_results(request.get_data())
 
-
-    return "You have requested this page and expected {algo:}\nHeaders: {headers:}".format(algo=algo,
-                                                                                           headers=json.dumps(
-                                                                                               dict(request.headers)))
+    return json.dumps(results)

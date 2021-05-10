@@ -4,7 +4,7 @@ connection:
   main:
     port: 8085
     path: /process/algo/{{input.algo}}/
-    method: GET
+    method: POST
     body:
       type: binary
       input: "{{input.image}}"

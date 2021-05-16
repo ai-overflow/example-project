@@ -516,21 +516,89 @@
         },
         "output": {
             "type": "object",
-            "description": "",
+            "description": "Output values",
             "patternProperties": {
                 "^[a-z][a-zA-Z0-9_-]+$": {
                     "type": "object",
+                    "description": "Name of the output",
                     "properties": {
                         "type": {
                             "type": "string",
-                            "description": "",
+                            "description": "Type",
                             "enum": [
                                 "list",
                                 "polygon",
                                 "image",
                                 "html"
                             ]
+                        },
+                        "repeat": {
+                            "type": "object",
+                            "description": "Is the value an array of this type?",
+                            "properties": {
+                                "enable": {
+                                    "type": "boolean",
+                                    "description": "enable repeated values"
+                                }
+                            },
+                            "if": {
+                                "properties": {
+                                    "enable": {
+                                        "const": true
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "iterator": {
+                                        "type": "string",
+                                        "description": "Iterator for repeated values"
+                                    }
+                                },
+                                "required": ["iterator"]
+                            }
+                        },
+                        "label": {
+                            "type": "string",
+                            "description": "Label of values. Can be an array if repeat is true"
                         }
+                    },
+                    "required": ["type", "label"],
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "list"
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "format": {
+                                "type": "object",
+                                "description": "Format of this input",
+                                "properties": {
+                                    "labelName": {
+                                        "type": "string",
+                                        "description": "Name of label(s). If multiple values is true this must be an array"
+                                    },
+                                    "labelValue": {
+                                        "type": "string",
+                                        "description": "value of labels"
+                                    },
+                                    "representation": {
+                                        "type": "string",
+                                        "description": "type of list",
+                                        "enum": [
+                                            "discretePercentageBar",
+                                            "percentageBar",
+                                            "text"
+                                        ]
+                                    }
+                                },
+                                "required": ["labelName", "labelValue"]
+                            }
+                        },
+                        "required": ["format"]
                     }
                 }
             }

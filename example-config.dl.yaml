@@ -123,9 +123,9 @@ output:
     type: "polygon"
     labelName: "Label"
     format:
-      labelValue: "{{cmd.json(root/polygons[]/coordinates)}}"
-      polygonName: "{{cmd.json(root/polygons[]/label)}}"
-      color: "{{cmd.json(root/polygons[]/color)}}"
+      labelValue: "{{cmd.json(connection.main/polygons[]/coordinates)}}"
+      polygonName: "{{cmd.json(connection.main/polygons[]/label)}}"
+      color: "{{cmd.json(connection.main/polygons[]/color)}}"
       representation: "polygon" # filled, polygon (connected), dots; both: ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
       overlay: "input.image" # must be input or output (output.outputC)
   outputC:
@@ -133,19 +133,20 @@ output:
     type: "image"
     format:
       type: "url"
-      labelValue: "{{cmd.json(root[0]/link[0]/src)}}"
+      labelName: "{{cmd.json(connection.main[0]/link[0]/label)}}"
+      labelValue: "{{cmd.json(connection.main[0]/link[0]/src)}}"
   outputD:
     label: "random image 2"
     type: "image"
     format:
       type: "connection"
-      labelName: "{{cmd.json(root[0]/link[0]/src)}}"
+      labelName: "{{cmd.json(connection.imageURL[0]/link[0]/src)}}"
       connection:
         ref: "imageURL"
         vars:
-            id: "{{cmd.json(root[0]/link[0]/src)}}"
+            id: "{{cmd.json(connection.main[0]/link[0]/src)}}"
   outputE:
     label: "random html"
     type: "html"
     format:
-      labelValue: "root[0]/link[0]/src"
+      labelValue: "connection.main[0]/link[0]/src"

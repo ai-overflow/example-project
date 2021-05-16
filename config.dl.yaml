@@ -28,11 +28,6 @@ output:
     label: "List of all Elements"
     type: "list"
     format:
-      labelName: "{{cmd.json(connection/dense_2[]/name)}}"
-      labelValue: "{{cmd.json(connection/dense_2[]/certainty)}}"
+      labelName: "{{cmd.json(connection.main/dense_2[]/name)}}"
+      labelValue: "{{cmd.json(connection.main/dense_2[]/certainty)}}"
       representation: "discretePercentageBar" # percentageBar, discretePercentageBar, text
-  outputE:
-    label: "html test"
-    type: "html"
-    format:
-      labelValue: "{{cmd.json(connection/dense_2[]/certainty)}}"

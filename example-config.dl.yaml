@@ -14,10 +14,10 @@ authors:
 # WIP: find open format with tooling like postman?
 connection:
   main:
-    port: 8085
+    port: 3000
     protocol: "HTTP" # HTTPS
     path: "/image/test/{{input.algo}}/"
-    method: "POST" # GET, PUT, DELETE
+    method: "GET" # GET, PUT, DELETE
     params:
       bla: "{{input.sliderA}}"
       blubb: "{{input.inputA}}"
@@ -115,38 +115,63 @@ output:
       iterator: "{{cmd.json()}}"
     format:
       multipleValues: true
-      labelName: "description"
-      labelValue: "score"
+      labelName: "{{cmd.json(connection.main/dense_2[]/name)}}"
+      labelValue: "{{cmd.json(connection.main/dense_2[]/certainty)}}"
       representation: "percentageBar" # percentageBar, discretePercentageBar
   outputB:
+    label: "score output 2"
+    type: "list"
+    repeat:
+      enable: true
+      iterator: "{{cmd.json()}}"
+    format:
+      multipleValues: true
+      labelName: "{{cmd.json(connection.main/dense_3[]/name)}}"
+      representation: "text" # percentageBar, discretePercentageBar
+  outputC:
+    label: "score output 3"
+    type: "list"
+    repeat:
+      enable: true
+      iterator: "{{cmd.json()}}"
+    format:
+      multipleValues: true
+      labelName: "{{cmd.json(connection.main/dense_4[]/name)}}"
+      labelValue: "{{cmd.json(connection.main/dense_4[]/value)}}"
+      representation: "discrete" # percentageBar, discretePercentageBar
+  outputD:
     label: "polygon inc."
     type: "polygon"
-    labelName: "Label"
     format:
       labelValue: "{{cmd.json(connection.main/polygons[]/coordinates)}}"
-      polygonName: "{{cmd.json(connection.main/polygons[]/label)}}"
-      color: "{{cmd.json(connection.main/polygons[]/color)}}"
+      labelName: "{{cmd.json(connection.main/polygons[]/label)}}"
+      labelColor: "{{cmd.json(connection.main/polygons[]/color)}}"
       representation: "polygon" # filled, polygon (connected), dots; both: ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
       overlay: "input.image" # must be input or output (output.outputC)
-  outputC:
+  outputE:
     label: "random image"
     type: "image"
     format:
       type: "url"
-      labelName: "{{cmd.json(connection.main[0]/link[0]/label)}}"
-      labelValue: "{{cmd.json(connection.main[0]/link[0]/src)}}"
-  outputD:
+      labelName: "{{cmd.json(connection.main/link[0]/label)}}"
+      labelValue: "{{cmd.json(connection.main/link[0]/src)}}"
+  outputF:
     label: "random image 2"
     type: "image"
     format:
       type: "connection"
-      labelName: "{{cmd.json(connection.imageURL[0]/link[0]/src)}}"
+      labelName: "{{cmd.json(connection.imageURL/link2[0]/label)}}"
       connection:
         ref: "imageURL"
         vars:
-            id: "{{cmd.json(connection.main[0]/link[0]/src)}}"
-  outputE:
+            id: "{{cmd.json(connection.main/link2[0]/src)}}"
+  outputG:
     label: "random html"
     type: "html"
     format:
-      labelValue: "connection.main[0]/link[0]/src"
+      labelValue: "{{cmd.json(connection.main/html[1])}}"
+  outputH:
+    label: "random iframe"
+    type: "iframe"
+    format:
+      labelValue: "{{cmd.json(connection.main/iframe[0])}}"

@@ -405,7 +405,9 @@
                                         }
                                     }
                                 },
-                                "required": ["type"]
+                                "required": [
+                                    "type"
+                                ]
                             }
                         },
                         "required": [
@@ -529,7 +531,8 @@
                                 "list",
                                 "polygon",
                                 "image",
-                                "html"
+                                "html",
+                                "iframe"
                             ]
                         },
                         "repeat": {
@@ -555,7 +558,9 @@
                                         "description": "Iterator for repeated values"
                                     }
                                 },
-                                "required": ["iterator"]
+                                "required": [
+                                    "iterator"
+                                ]
                             }
                         },
                         "label": {
@@ -563,7 +568,10 @@
                             "description": "Label of values. Can be an array if repeat is true"
                         }
                     },
-                    "required": ["type", "label"],
+                    "required": [
+                        "type",
+                        "label"
+                    ],
                     "if": {
                         "properties": {
                             "type": {
@@ -589,16 +597,37 @@
                                         "type": "string",
                                         "description": "type of list",
                                         "enum": [
-                                            "discretePercentageBar",
+                                            "discrete",
                                             "percentageBar",
                                             "text"
                                         ]
                                     }
                                 },
-                                "required": ["labelName", "labelValue"]
+                                "required": [
+                                    "labelName"
+                                ],
+                                "if": {
+                                    "properties": {
+                                        "representation": {
+                                            "oneOf": [
+                                                {
+                                                    "const": "percentageBar"
+                                                },
+                                                {
+                                                    "const": "discrete"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "required": ["labelValue"]
+                                }
                             }
                         },
-                        "required": ["format"]
+                        "required": [
+                            "format"
+                        ]
                     }
                 }
             }

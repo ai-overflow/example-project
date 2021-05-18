@@ -54,13 +54,16 @@ def triton_process(data, model_name):
     except Exception as e:
         print("context creation failed: " + str(e))
         sys.exit(1)
+
+    # if triton is not in default mode load models:
     # triton_client.unload_model(model_name=model_name)
-    if not triton_client.is_model_ready(model_name=model_name):
-        try:
-            triton_client.load_model(model_name=model_name)
-        except InferenceServerException as e:
-            print("failed to load model: " + str(e))
-            sys.exit(1)
+    #if not triton_client.is_model_ready(model_name=model_name):
+    #    try:
+    #        triton_client.load_model(model_name=model_name)
+    #    except InferenceServerException as e:
+    #        print("failed to load model: " + str(e))
+    #        sys.exit(1)
+
     try:
         model_metadata = triton_client.get_model_metadata(model_name=model_name)
     except InferenceServerException as e:

@@ -126,7 +126,7 @@ output:
       iterator: "{{cmd.json()}}"
     format:
       multipleValues: true
-      labelName: "{{cmd.json(connection.main/dense_3[]/name)}}"
+      labelName: "{{cmd.json(connection.main/dense_3[])}}"
       representation: "text" # percentageBar, discretePercentageBar
   outputC:
     label: "score output 3"

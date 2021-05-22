@@ -572,63 +572,216 @@
                         "type",
                         "label"
                     ],
-                    "if": {
-                        "properties": {
-                            "type": {
-                                "const": "list"
-                            }
-                        }
-                    },
-                    "then": {
-                        "properties": {
-                            "format": {
-                                "type": "object",
-                                "description": "Format of this input",
+                    "allOf": [
+                        {
+                            "if": {
                                 "properties": {
-                                    "labelName": {
-                                        "type": "string",
-                                        "description": "Name of label(s). If multiple values is true this must be an array"
-                                    },
-                                    "labelValue": {
-                                        "type": "string",
-                                        "description": "value of labels"
-                                    },
-                                    "representation": {
-                                        "type": "string",
-                                        "description": "type of list",
-                                        "enum": [
-                                            "discrete",
-                                            "percentageBar",
-                                            "text"
-                                        ]
+                                    "type": {
+                                        "const": "list"
                                     }
-                                },
-                                "required": [
-                                    "labelName"
-                                ],
-                                "if": {
-                                    "properties": {
-                                        "representation": {
-                                            "oneOf": [
-                                                {
-                                                    "const": "percentageBar"
-                                                },
-                                                {
-                                                    "const": "discrete"
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "format": {
+                                        "type": "object",
+                                        "description": "Format of this input",
+                                        "properties": {
+                                            "labelName": {
+                                                "type": "string",
+                                                "description": "Name of label(s). If multiple values is true this must be an array"
+                                            },
+                                            "labelValue": {
+                                                "type": "string",
+                                                "description": "value of labels"
+                                            },
+                                            "representation": {
+                                                "type": "string",
+                                                "description": "type of list",
+                                                "enum": [
+                                                    "discrete",
+                                                    "percentageBar",
+                                                    "text"
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "labelName"
+                                        ],
+                                        "if": {
+                                            "properties": {
+                                                "representation": {
+                                                    "oneOf": [
+                                                        {
+                                                            "const": "percentageBar"
+                                                        },
+                                                        {
+                                                            "const": "discrete"
+                                                        }
+                                                    ]
                                                 }
+                                            }
+                                        },
+                                        "then": {
+                                            "required": [
+                                                "labelValue"
                                             ]
                                         }
                                     }
                                 },
-                                "then": {
-                                    "required": ["labelValue"]
-                                }
+                                "required": [
+                                    "format"
+                                ]
                             }
                         },
-                        "required": [
-                            "format"
-                        ]
-                    }
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "const": "image"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "format": {
+                                        "type": "object",
+                                        "description": "Format of this image",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "url",
+                                                    "connection"
+                                                ]
+                                            }
+                                        },
+                                        "required": [
+                                            "type"
+                                        ],
+                                        "allOf": [
+                                            {
+                                                "if": {
+                                                    "properties": {
+                                                        "type": {
+                                                            "const": "url"
+                                                        }
+                                                    }
+                                                },
+                                                "then": {
+                                                    "properties": {
+                                                        "labelName": {
+                                                            "type": "string",
+                                                            "description": "Image Name"
+                                                        },
+                                                        "labelValue": {
+                                                            "type": "string",
+                                                            "description": "Image URL"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "labelName",
+                                                        "labelValue"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "if": {
+                                                    "properties": {
+                                                        "type": {
+                                                            "const": "connection"
+                                                        }
+                                                    }
+                                                },
+                                                "then": {
+                                                    "properties": {
+                                                        "labelName": {
+                                                            "type": "string",
+                                                            "description": "Image Name"
+                                                        },
+                                                        "connection": {
+                                                            "type": "object",
+                                                            "description": "Connections info",
+                                                            "properties": {
+                                                                "ref": {
+                                                                    "type": "string",
+                                                                    "description": "Reference to Connection which retruns the image. This connection must return a valid image source."
+                                                                },
+                                                                "vars": {
+                                                                    "type": "object",
+                                                                    "description": "additional variables for this image"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "ref",
+                                                                "vars"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "labelName",
+                                                        "connection"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "format"
+                                ]
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "const": "polygon"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "format": {
+                                        "type": "object",
+                                        "description": "Polygon Type",
+                                        "properties": {
+                                            "labelValue": {
+                                                "type": "string",
+                                                "description": "Array of Coordinates"
+                                            },
+                                            "labelName": {
+                                                "type": "string",
+                                                "description": "Array of Label Descriptions"
+                                            },
+                                            "labelColor": {
+                                                "type": "string",
+                                                "description": "Array of Polygon Colors. In HTML Format (rgba(), #FFF, ...)"
+                                            },
+                                            "representation": {
+                                                "enum": ["polygon", "filled", "dots"],
+                                                "description": "Polygon Representation"
+                                            },
+                                            "overlay": {
+                                                "type": "string",
+                                                "description": "Set this image as the background. Must be in the format: input.A or output.A. This Input/Output must be of type image"
+                                            }
+                                        },
+                                        "required": [
+                                            "labelValue",
+                                            "labelName",
+                                            "labelColor",
+                                            "representation",
+                                            "overlay"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "format"
+                                ]
+                            }
+                        }
+                    ]
                 }
             }
         }

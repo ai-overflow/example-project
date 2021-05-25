@@ -134,15 +134,13 @@ output:
   outputD:
     label: "score output 4"
     type: "list"
-    repeat:
-      enable: true
-      iterator: "{{cmd.json()}}"
     format:
       multipleValues: true
-      labelName: "{{link.labelName)}}"
-      labelValue: "{{link.labelValue)}}"
+      labelName: "{{cmd.json(connection.main/polygons[]/label)}}"
+      labelValue: "{{cmd.json(connection.main/polygons[]/color)}}"
       representation: "discrete" # percentageBar, discretePercentageBar
-      link: "outputE"
+      link:
+        with: "outputE"
   outputE:
     label: "polygon inc."
     type: "polygon"

@@ -102,40 +102,30 @@ output:
   outputA:
     label: "score output"
     type: "list"
-    repeat:
-      enable: true
-      iterator: "{{cmd.json()}}"
     format:
-      multipleValues: true
       labelName: "{{cmd.json(connection.main/dense_2[]/name)}}"
       labelValue: "{{cmd.json(connection.main/dense_2[]/certainty)}}"
       representation: "percentageBar" # percentageBar, discretePercentageBar
   outputB:
     label: "score output 2"
     type: "list"
-    repeat:
-      enable: true
-      iterator: "{{cmd.json()}}"
     format:
-      multipleValues: true
       labelName: "{{cmd.json(connection.main/dense_3[])}}"
       representation: "text" # percentageBar, discretePercentageBar
   outputC:
     label: "score output 3"
     type: "list"
     repeat:
-      enable: true
-      iterator: "{{cmd.json()}}"
+      iterator: "connection.main/dense_4/value"
+      title: "connection.main/dense_4/title"
     format:
-      multipleValues: true
-      labelName: "{{cmd.json(connection.main/dense_4[]/name)}}"
-      labelValue: "{{cmd.json(connection.main/dense_4[]/value)}}"
+      labelName: "{{cmd.iterator([]/name)}}"
+      labelValue: "{{cmd.iterator([]/value)}}"
       representation: "discrete" # percentageBar, discretePercentageBar
   outputD:
     label: "score output 4"
     type: "list"
     format:
-      multipleValues: true
       labelName: "{{cmd.json(connection.main/polygons[]/label)}}"
       labelValue: "{{cmd.json(connection.main/polygons[]/color)}}"
       representation: "discrete" # percentageBar, discretePercentageBar

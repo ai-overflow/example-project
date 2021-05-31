@@ -1,3 +1,8 @@
+"""Flask Setup File
+
+This file will setup Flask with CORS be enable remote requests
+"""
+
 from flask import Flask
 from flask_cors import CORS
 

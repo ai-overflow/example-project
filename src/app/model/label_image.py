@@ -32,6 +32,23 @@ def parse_model_http(model_metadata, model_config):
 
 
 def postprocess_image(results, output_names, fac):
+    """
+    Post process a Triton Server label output into a json output.
+
+    Parameter
+    ---------
+    result:
+        Triton results from server request
+    output_names: list
+        List of all outputs from the model
+    fac: dict
+        Lookup table to fit an output int to a label
+
+    Returns
+    -------
+    dict:
+        Dictionary containing the label name and the percentage to fit the given label
+    """
     output_dict = {}
     for output_name in output_names:
         output_dict[output_name] = results.as_numpy(output_name)
@@ -48,6 +65,23 @@ def postprocess_image(results, output_names, fac):
 
 
 def triton_process(data, model_name):
+    """
+    This method will send data to the Triton model model_name.\n
+    The Request will be made via HTTP.
+
+    Parameters
+    ----------
+    data: ndarray
+        File data which will be passed to triton. Must be FP32 numpy array
+    model_name: str
+        Triton model name, e.g. if your model is in the folder 'models/abc' this should be 'abc'
+
+    Returns
+    -------
+    Any, list:
+        result: Triton results from server request.
+        output_names: List of all outputs from the model
+    """
     try:
         triton_client = httpclient.InferenceServerClient(url="triton:8000",
                                                          verbose=False)
@@ -56,13 +90,16 @@ def triton_process(data, model_name):
         sys.exit(1)
 
     # if triton is not in default mode load models:
+    #
+    # UNCOMMENT
     # triton_client.unload_model(model_name=model_name)
-    #if not triton_client.is_model_ready(model_name=model_name):
+    # if not triton_client.is_model_ready(model_name=model_name):
     #    try:
     #        triton_client.load_model(model_name=model_name)
     #    except InferenceServerException as e:
     #        print("failed to load model: " + str(e))
     #        sys.exit(1)
+    # END UNCOMMENT
 
     try:
         model_metadata = triton_client.get_model_metadata(model_name=model_name)
@@ -88,6 +125,16 @@ def triton_process(data, model_name):
 
 
 def get_results(image_data):
+    """
+    This method will request labels from triton for a given image.\n
+    It will down sample the image to 32x32px float32 RGB.\n
+    This method needs a label classification file (data/img_classification.pickle)
+
+    Parameters
+    ----------
+    image_data: bytes
+        Generate labels for this image
+    """
     name = 'image_label'
     img = np.asarray([np.array(
         Image.open(BytesIO(image_data))

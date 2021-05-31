@@ -11,7 +11,6 @@ description: "Bla Bla Bla Mr. Freeman"
 authors:
   - "John Doe"
 # Connection contains all connections which can be initialized
-# WIP: find open format with tooling like postman?
 connection:
   main:
     port: 3000
@@ -35,10 +34,10 @@ connection:
           type: "text"
           value: "{{input.checkboxA}}"
   imageURL:
-    port: 6666
+    port: 5001
     protocol: "HTTP"
-    path: "/image/test/{{input.algo}}/"
-    method: GET
+    path: "/image/test/D0/"
+    method: POST
     params:
       id: "{{vars.id}}"
     body:

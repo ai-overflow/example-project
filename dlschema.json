@@ -759,7 +759,7 @@
                                                 "description": "Array of Polygon Colors. In HTML Format (rgba(), #FFF, ...)"
                                             },
                                             "representation": {
-                                                "enum": ["polygon", "filled", "dots"],
+                                                "enum": ["polygon", "filled", "dots", "line"],
                                                 "description": "Polygon Representation"
                                             },
                                             "overlay": {

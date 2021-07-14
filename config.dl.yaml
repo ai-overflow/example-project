@@ -30,4 +30,4 @@ output:
     format:
       labelName: "{{cmd.json(connection.main/dense_2[]/name)}}"
       labelValue: "{{cmd.json(connection.main/dense_2[]/certainty)}}"
-      representation: "discrete" # percentageBar, discretePercentageBar, text
+      representation: "percentageBar" # discrete, percentageBar, discretePercentageBar, text

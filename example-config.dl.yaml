@@ -140,13 +140,23 @@ output:
       representation: "polygon" # filled, polygon (connected), dots; both: ([{x: 2305, y: 874}, {x: 2574, y: 874}, {x: 2574, y: 1190}, {x: 2305, y: 1190}])
       overlay: "input.image" # must be input or output (output.outputC)
   outputF:
+    label: "polygon inc."
+    type: "polygon"
+    format:
+      labelValue: "{{cmd.json(connection.main/lines[]/coordinates)}}"
+      labelName: "{{cmd.json(connection.main/lines[]/label)}}"
+      labelColor: "{{cmd.json(connection.main/lines[]/color)}}"
+      labelLineWidth: "{{cmd.json(connection.main/lines[]/lineWidth)}}"
+      representation: "line"
+      overlay: "input.image"
+  outputG:
     label: "random image"
     type: "image"
     format:
       type: "url"
       labelName: "{{cmd.json(connection.main/link[0]/label)}}"
       labelValue: "{{cmd.json(connection.main/link[0]/src)}}"
-  outputG:
+  outputH:
     label: "random image 2"
     type: "image"
     format:
@@ -156,12 +166,12 @@ output:
         ref: "imageURL"
         vars:
             id: "{{cmd.json(connection.main/link2[0]/src)}}"
-  outputH:
+  outputI:
     label: "random html"
     type: "html"
     format:
       labelValue: "{{cmd.json(connection.main/html[1])}}"
-  outputI:
+  outputJ:
     label: "random iframe"
     type: "iframe"
     format:
